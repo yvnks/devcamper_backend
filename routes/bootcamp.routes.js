@@ -1,40 +1,19 @@
 import express from 'express';
+import {
+  createBootcamp,
+  deleteBootcamp,
+  getBootcamp,
+  getBootcamps,
+  updateBootcamp,
+} from '../controllers/bootcamp.controller.js';
 
-const router = express.Router();
+const router = express.Router() 
 
-router.get('/', (req, res) => {
-  res.json({
-    enroll: true,
-    msg: `GET bootcamp ${req.params.id}`,
-  });
-});
-
-router.get('/:id', (req, res) => {
-  res.json({
-    enroll: true,
-    msg: `GET single bootcamp ${req.params.id}`,
-  });
-});
-
-router.post('/', (req, res) => {
-  res.status(201).json({
-    enroll: true,
-    msg: `POST bootcamp`,
-  });
-});
-
-router.patch('/:id', (req, res) => {
-  res.status(200).json({
-    success: true,
-    msg: `Update bootcamp ${req.params.id}`,
-  });
-});
-
-router.delete('/:id', (req, res) => {
-  res.json({
-    success: true,
-    msg: `Delete bootcamp ${req.params.id}`,
-  });
-});
+router.route('/').get(getBootcamps).post(createBootcamp);
+router
+  .route('/:id')
+  .get(getBootcamp)
+  .patch(updateBootcamp)
+  .delete(deleteBootcamp);
 
 export default router;
