@@ -23,7 +23,7 @@ export const createBootcamp = (req, res, next) => {
 // @route   PATCH /api/v1/bootcamps/:id
 // @access  Public
 export const updateBootcamp = (req, res, next) => {
-  res.status(201).json({ enroll: true, msg: `POST new bootcamp` });
+  res.status(201).json({ enroll: true, msg: `PATCH new bootcamp` });
 };
 
 // @desc    Delete specific bootcamp
