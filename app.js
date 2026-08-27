@@ -1,19 +1,19 @@
-import express from 'express';
-import { configDotenv } from 'dotenv';
-import morgan from 'morgan';
-import router from './routes/bootcamp.routes.js';
-import connectDB from './config/db.bootcamp.js';
+import express from "express";
+import { configDotenv } from "dotenv";
+import morgan from "morgan";
+import router from "./routes/bootcamp.routes.js";
+import connectDB from "./config/db.bootcamp.js";
 
-configDotenv({ path: './config/config.env' });
+configDotenv({ path: "./config/config.env" });
 const PORT = process.env.PORT || 5000;
 
 const app = express();
 
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
 }
 
-app.use('/api/v1/bootcamps', router);
+app.use("/api/v1/bootcamps", router);
 
 // Connect env to atlas.
 connectDB();
@@ -26,7 +26,7 @@ const server = app.listen(
   ),
 );
 
-process.on('unhandledRejection', (error, promise) => {
+process.on("unhandledRejection", (error, promise) => {
   console.log(`ERROR: ${error.message}`);
   server.close(() => {
     process.exit(1);
