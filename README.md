@@ -10,3 +10,12 @@ Features the following:
 ```bash
 npm install
 ```
+
+## Start application
+```bash
+# run in development mode
+yarn dev
+
+# run in production mode
+yarn start
+```
