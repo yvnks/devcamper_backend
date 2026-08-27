@@ -1,5 +1,5 @@
-#devcamper-api
-backend api for devcamper application. 
+# devcamper-api
+> backend api for devcamper application. 
 
 Features the following:
 ** advanced searching
