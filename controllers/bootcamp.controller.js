@@ -20,9 +20,16 @@ export const getBootcamp = (req, res, next) => {
 // @route   POST /api/v1/bootcamps/:id
 // @access  Private
 export const createBootcamp = async (req, res, next) => {
-  const bootcamp = await Bootcamp.create(req.body);
-  console.log(req.body);
-  res.status(201).json({ success: true, data: bootcamp });
+  try {
+    const bootcamp = await Bootcamp.create(req.body);
+    console.log(req.body);
+    res.status(201).json({ success: true, data: bootcamp });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      data: null,
+    });
+  }
 };
 
 export const updateBootcamp = (req, res, next) => {
