@@ -9,11 +9,23 @@ export const getBootcamps = async (req, res, next) => {
   res.status(200).json({ success: true, data: bootcamp });
 };
 
-export const getBootcamp = (req, res, next) => {
-  // @desc    Get a single bootcamp
-  // @route   GET /api/v1/bootcamps/:id
-  // @access  Public
-  res.status(200).json({ enroll: true, msg: `GET Single bootcamp ` });
+// @desc    Get a single bootcamp
+// @route   GET /api/v1/bootcamps/:id
+// @access  Public
+export const getBootcamp = async (req, res, next) => {
+  try {
+    const bootcamp = await Bootcamp.findById(req.params.id);
+
+    if (!bootcamp) {
+      return res.status(400).json({ success: false });
+    }
+    res.status(200).json({ success: true, data: bootcamp });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      data: null,
+    });
+  }
 };
 
 // @desc    Create new bootcamp
