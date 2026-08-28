@@ -25,7 +25,7 @@ const BootcampSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    maxlength: [10, "Cannot be more than 10 Characters"],
+    maxlength: [15, "Cannot be more than 10 Characters"],
   },
   email: {
     type: String,
@@ -42,11 +42,11 @@ const BootcampSchema = new mongoose.Schema({
     type: {
       type: String,
       enum: ["Point"],
-      required: true,
+      //required: true,
     },
     coordinates: {
       type: [Number],
-      required: true,
+      // required: true,
       index: "2dsphere",
     },
     formattedAddress: String,

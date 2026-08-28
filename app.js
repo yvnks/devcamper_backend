@@ -9,6 +9,9 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 
+// Body parser middleware.
+app.use(express.json());
+
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
