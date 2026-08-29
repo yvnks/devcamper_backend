@@ -1,9 +1,10 @@
+
 const customErrorHandler = (err, req, res, next) => {
   console.log(err.stack);
 
-  res.status(500).json({
+  res.status(err.statusCode || 500).json({
     success: false,
-    err: err.message,
+    err: err.message || 'Server Error'
   });
 };
 
