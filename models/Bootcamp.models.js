@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import slugify from "slugify";
+import geocoder from "../utils/app.geocoder.js";
 
 const BootcampSchema = new mongoose.Schema({
   name: {
@@ -12,9 +13,9 @@ const BootcampSchema = new mongoose.Schema({
   slug: String,
   description: {
     type: String,
-    required: [true, "Please enter your name."],
+    required: [true, "Tell us about the bootcamp"],
     trim: true,
-    maxlength: [500, "Cannot be more than 50 characters"],
+    maxlength: [500, "Cannot be more than 500 characters"],
   },
 
   website: {
@@ -26,7 +27,7 @@ const BootcampSchema = new mongoose.Schema({
   },
   phone: {
     type: String,
-    maxlength: [15, "Cannot be more than 10 Characters"],
+    maxlength: [15, "Cannot be more than 15 Characters"],
   },
   email: {
     type: String,
@@ -102,6 +103,28 @@ const BootcampSchema = new mongoose.Schema({
 // mongoose middleware to create a slug from name.
 BootcampSchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true });
+  next();
+});
+
+BootcampSchema.pre("save", async function () {
+  console.log("Address:", this.address);
+
+  const loc = await geocoder.geocode(this.address);
+
+  console.log("Geocoder result:", loc);
+  this.location = {
+    type: "Point",
+    coordinates: [loc[0].longitude, loc[0].latitude],
+    formattedAddress: loc[0].formattedAddress,
+    street: loc[0].streetName,
+    city: loc[0].city,
+    state: loc[0].stateCode,
+    zipcode: loc[0].zipcode,
+    country: loc[0].countryCode,
+  };
+
+  // reject address from DB
+  this.address = undefined;
 });
 
 export default mongoose.model("Bootcamp", BootcampSchema);

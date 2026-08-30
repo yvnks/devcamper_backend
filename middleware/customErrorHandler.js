@@ -4,8 +4,6 @@ const customErrorHandler = (err, req, res, next) => {
   let error = { ...err };
   error.message = err.message;
 
-  console.log(error);
-
   // mongoose bad objectId
   if (err.name === "CastError") {
     const message = `Resource not found with ID of ${err.value}`;
