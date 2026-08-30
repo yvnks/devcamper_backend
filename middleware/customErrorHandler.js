@@ -18,6 +18,14 @@ const customErrorHandler = (err, req, res, next) => {
     error = new CustomErrorHandlerAPI(message, 400);
   }
 
+  if (err.name === "ValidationError") {
+    const message = Object.values(err.errors).map((error) => {
+      return error.message;
+    });
+    console.log(message);
+    error = new CustomErrorHandlerAPI(message, 400);
+  }
+
   res.status(error.statusCode || 500).json({
     success: false,
     error: error.message || "Server Error",
