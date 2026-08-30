@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import slugify from "slugify";
 
 const BootcampSchema = new mongoose.Schema({
   name: {
@@ -96,6 +97,11 @@ const BootcampSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+});
+
+// mongoose middleware to create a slug from name.
+BootcampSchema.pre("save", function (next) {
+  this.slug = slugify(this.name, { lower: true });
 });
 
 export default mongoose.model("Bootcamp", BootcampSchema);

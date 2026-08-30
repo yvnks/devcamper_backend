@@ -7,7 +7,6 @@ import asyncHandler from "../middleware/asyncHandler.js";
 // @access  Public
 export const getBootcamps = asyncHandler(async (req, res, next) => {
   const bootcamp = await Bootcamp.find({});
-  console.log(req.body);
   res
     .status(200)
     .json({ success: true, count: bootcamp.length, data: bootcamp });
