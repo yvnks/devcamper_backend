@@ -1,5 +1,5 @@
 import Bootcamp from "../models/Bootcamp.models.js";
-import customErrorHandlerAPI from "../helpers/customErrorHandlerAPI.js";
+import CustomErrorHandlerAPI from "../helpers/customErrorHandlerAPI.js";
 
 // @desc    Get all bootcamps
 // @route   GET /api/v1/bootcamps
@@ -21,23 +21,18 @@ export const getBootcamp = async (req, res, next) => {
 
     if (!bootcamp) {
       return next(
-        new customErrorHandlerAPI(
+        new CustomErrorHandlerAPI(
           `Bootcamp not found with ID of ${req.params.id}`,
           404,
         ),
       );
-    };
+    }
     res.status(200).json({ success: true, data: bootcamp });
   } catch (err) {
     // res.status(400).json({
     //   success: false,
     // });
-    next(
-      new customErrorHandlerAPI(
-        `Bootcamp not found with ID of ${req.params.id}`,
-        404,
-      ),
-    );
+    next(err);
   }
 };
 
@@ -49,11 +44,8 @@ export const createBootcamp = async (req, res, next) => {
     const bootcamp = await Bootcamp.create(req.body);
     console.log(req.body);
     res.status(201).json({ success: true, data: bootcamp });
-  } catch (error) {
-    res.status(401).json({
-      success: false,
-      data: null,
-    });
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -68,12 +60,17 @@ export const updateBootcamp = async (req, res, next) => {
     });
 
     if (!bootcamp) {
-      return res.status(400).json({ success: false });
+      return next(
+        new CustomErrorHandlerAPI(
+          `Bootcamp not found with ID of ${req.params.id}`,
+          404,
+        ),
+      );
     }
 
     res.status(200).json({ enroll: true, data: bootcamp });
-  } catch (error) {
-    res.status(400).json({ success: false, data: null });
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -88,7 +85,7 @@ export const deleteBootcamp = async (req, res, next) => {
       return res.status(400).json({ success: false });
     }
     res.status(200).json({ enroll: true, data: {} });
-  } catch (error) {
-    res.status(400).json({ success: false, data: null });
+  } catch (err) {
+    next(err);
   }
 };
