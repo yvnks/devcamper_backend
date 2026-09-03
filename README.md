@@ -26,9 +26,4 @@ You will need to create a `.env` file in the root of the project and add the fol
 NODE_ENV=development
 PORT=5000
 MONGO_URI=your_mongo_uri
-JWT_SECRET=your_jwt_secret
-JWT_EXPIRE=30d
-
-GEOCODER_API_KEY=your_mapquest_api_key
-GEOCORDER_PROVIDER=mapquest
 ```
