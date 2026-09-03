@@ -1,6 +1,6 @@
-import Bootcamp from "../models/Bootcamp.models.js";
-import CustomErrorHandlerAPI from "../helpers/customErrorHandlerAPI.js";
-import asyncHandler from "../middleware/asyncHandler.js";
+import Bootcamp from '../models/Bootcamp.models.js';
+import CustomErrorHandlerAPI from '../helpers/customErrorHandlerAPI.js';
+import asyncHandler from '../middleware/asyncHandler.js';
 
 // @desc    Get all bootcamps
 // @route   GET /api/v1/bootcamps
