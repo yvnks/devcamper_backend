@@ -1,4 +1,4 @@
-import Bootcamp from '../models/Bootcamp.models.js';
+import Bootcamp from '../models/Bootcamp.model.js';
 import CustomErrorHandlerAPI from '../helpers/customErrorHandlerAPI.js';
 import asyncHandler from '../middleware/asyncHandler.js';
 

@@ -1,7 +1,7 @@
 import express from "express";
 import { configDotenv } from "dotenv";
 import morgan from "morgan";
-import router from "./routes/bootcamp.routes.js";
+import router from "./routes/bootcamp.route.js";
 import connectDB from "./config/db.bootcamp.js";
 import customErrorHandler from "./middleware/customErrorHandler.js";
 
