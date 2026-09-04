@@ -1,53 +1,53 @@
-import mongoose from "mongoose";
-import slugify from "slugify";
-import geocoder from "../utils/app.geocoder.js";
+import mongoose from 'mongoose';
+import slugify from 'slugify';
+import geocoder from '../utils/app.geocoder.js';
 
 const BootcampSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please enter your name."],
+    required: [true, 'Please enter your name.'],
     unique: true,
     trim: true,
-    maxlength: [50, "Cannot be more than 50 characters"],
+    maxlength: [50, 'Cannot be more than 50 characters'],
   },
   slug: String,
   description: {
     type: String,
-    required: [true, "Tell us about the bootcamp"],
+    required: [true, 'Tell us about the bootcamp'],
     trim: true,
-    maxlength: [500, "Cannot be more than 500 characters"],
+    maxlength: [500, 'Cannot be more than 500 characters'],
   },
 
   website: {
     type: String,
     match: [
       /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
-      "Please enter a valid URL with HTTP or HTTPS",
+      'Please enter a valid URL with HTTP or HTTPS',
     ],
   },
   phone: {
     type: String,
-    maxlength: [15, "Cannot be more than 15 Characters"],
+    maxlength: [15, 'Cannot be more than 15 Characters'],
   },
   email: {
     type: String,
     match: [
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      "Please enter a valid email",
+      'Please enter a valid email',
     ],
   },
   address: {
     type: String,
-    required: [true, "Please enter a valid address"],
+    required: [true, 'Please enter a valid address'],
   },
   location: {
     type: {
       type: String,
-      enum: ["Point"],
+      enum: ['Point'],
     },
     coordinates: {
       type: [Number],
-      index: "2dsphere",
+      index: '2dsphere',
     },
     formattedAddress: String,
     street: String,
@@ -60,23 +60,23 @@ const BootcampSchema = new mongoose.Schema({
     type: [String],
     required: true,
     enum: [
-      "Web Development",
-      "Mobile Development",
-      "UI/UX",
-      "Data Science",
-      "Business",
-      "Other",
+      'Web Development',
+      'Mobile Development',
+      'UI/UX',
+      'Data Science',
+      'Business',
+      'Other',
     ],
   },
   averageRating: {
     type: Number,
-    min: [1, "rating must be atleast 1"],
-    max: [10, "rating must not be more than 10"],
+    min: [1, 'rating must be atleast 1'],
+    max: [10, 'rating must not be more than 10'],
   },
   averageCost: Number,
   photo: {
     type: String,
-    default: "no-photo.jpeg",
+    default: 'no-photo.jpeg',
   },
   housing: {
     type: Boolean,
@@ -101,18 +101,15 @@ const BootcampSchema = new mongoose.Schema({
 });
 
 // mongoose middleware to create a slug from name.
-BootcampSchema.pre("save", function () {
+BootcampSchema.pre('save', function () {
   this.slug = slugify(this.name, { lower: true });
 });
 
-BootcampSchema.pre("save", async function () {
-  console.log("Address:", this.address);
-
+BootcampSchema.pre('save', async function () {
   const loc = await geocoder.geocode(this.address);
 
-  console.log("Geocoder result:", loc);
   this.location = {
-    type: "Point",
+    type: 'Point',
     coordinates: [loc[0].longitude, loc[0].latitude],
     formattedAddress: loc[0].formattedAddress,
     street: loc[0].streetName,
@@ -126,4 +123,4 @@ BootcampSchema.pre("save", async function () {
   this.address = undefined;
 });
 
-export default mongoose.model("Bootcamp", BootcampSchema);
+export default mongoose.model('Bootcamp', BootcampSchema);
