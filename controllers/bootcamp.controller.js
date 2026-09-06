@@ -72,7 +72,7 @@ export const deleteBootcamp = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Get bootcamps within a specific radius
-// @route   GET /api/v1/bootcamps/radius/:zipcode/:distance
+// @route   GET /api/v1/bootcamps/radius/:zipcode/:distance measured in miles /ms
 // @access  Private
 export const getBootcampInRadius = asyncHandler(async (req, res, next) => {
   const radiusOfTheEarth = 3963;
