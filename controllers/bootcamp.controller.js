@@ -7,7 +7,15 @@ import geocoder from '../utils/app.geocoder.js';
 // @route   GET /api/v1/bootcamps
 // @access  Public
 export const getBootcamps = asyncHandler(async (req, res, next) => {
-  const bootcamp = await Bootcamp.find({});
+  let query;
+
+  let queryStr = JSON.stringify(req.query);
+  queryStr = queryStr.replace(/\b(lt|lte|gt|gte|in)\b/g, (match) => `$${match}`);
+  console.log(queryStr);
+
+  query = Bootcamp.find(JSON.parse(queryStr));
+  const bootcamp = await query;
+
   res
     .status(200)
     .json({ success: true, count: bootcamp.length, data: bootcamp });
@@ -46,7 +54,6 @@ export const updateBootcamp = asyncHandler(async (req, res, next) => {
     new: true,
     runValidators: true,
   });
-
   if (!bootcamp) {
     return next(
       new CustomErrorHandlerAPI(
