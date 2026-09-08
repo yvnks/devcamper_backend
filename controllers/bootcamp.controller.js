@@ -9,11 +9,23 @@ import geocoder from '../utils/app.geocoder.js';
 export const getBootcamps = asyncHandler(async (req, res, next) => {
   let query;
 
-  let queryStr = JSON.stringify(req.query);
-  queryStr = queryStr.replace(/\b(lt|lte|gt|gte|in)\b/g, (match) => `$${match}`);
-  console.log(queryStr);
+  const reqQuery = { ...req.query };
+  const removeFields = ['select'];
+  removeFields.forEach((param) => delete reqQuery[param]);
+
+  let queryStr = JSON.stringify(reqQuery);
+  queryStr = queryStr.replace(
+    /\b(lt|lte|gt|gte|in)\b/g,
+    (match) => `$${match}`,
+  );
 
   query = Bootcamp.find(JSON.parse(queryStr));
+
+  if (req.query.select) {
+    const fields = req.query.select.split(',').join(' ');
+    query = query.select(fields);
+  }
+
   const bootcamp = await query;
 
   res
