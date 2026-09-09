@@ -7,8 +7,12 @@ import {
   getBootcamps,
   updateBootcamp,
 } from '../controllers/bootcamp.controller.js';
+import courses from './courses.route.js';
 
 const router = express.Router();
+
+// re-route into other resources;
+router.use('/:bootcampId/courses', courses);
 
 router.route('/radius/:zipcode/:distance').get(getBootcampInRadius);
 
