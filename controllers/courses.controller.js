@@ -17,7 +17,7 @@ export const getCourses = asyncHandler(async (req, res, next) => {
       path: 'bootcamp',
       select: 'name description',
     });
-  }
+  };
 
   const courses = await query;
 
