@@ -30,10 +30,6 @@ const CourseSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    scolarshipAvailable: {
-      type: Boolean,
-      default: false,
-    },
     bootcamp: {
       type: mongoose.Schema.ObjectId,
       required: true,
