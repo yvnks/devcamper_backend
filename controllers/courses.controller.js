@@ -29,6 +29,10 @@ export const getCourses = asyncHandler(async (req, res, next) => {
   });
 });
 
+/**
+ * GET single course.
+ * GET api/v1/courses/:id
+ */
 export const getCourse = asyncHandler(async function (req, res, next) {
   const course = await Course.findById(req.params.id).populate({
     path: 'bootcamp',
@@ -52,10 +56,25 @@ export const getCourse = asyncHandler(async function (req, res, next) {
  * adds a course to the db
  */
 export const addCourse = asyncHandler(async function (req, res, next) {
+  req.body.bootcamp = req.params.bootcampId;
+
+  const bootcamp = await Bootcamp.findById(req.params.bootcampId);
+
+  if (!bootcamp) {
+    return next(
+      new CustomErrorHandlerAPI(
+        `We tried to find a bootcamp with the ID: ${req.params.id}
+         but an unforseen error occured. We are notifying our engineers.`,
+        404,
+      ),
+    );
+  }
   const course = await Course.create(req.body);
 
   res.status(200).json({
     success: true,
     data: course,
   });
+
+  // GET api/v1/bootcamps/:bootcampId/courses
 });
