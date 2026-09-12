@@ -2,6 +2,7 @@ import Bootcamp from '../models/Bootcamp.model.js';
 import CustomErrorHandlerAPI from '../helpers/customErrorHandlerAPI.js';
 import asyncHandler from '../middleware/asyncHandler.js';
 import Course from '../models/courses.model.js';
+import customErrorHandler from '../middleware/customErrorHandler.js';
 
 // @desc    Get all bootcamps
 // @route   GET /api/v1/courses
@@ -17,7 +18,7 @@ export const getCourses = asyncHandler(async (req, res, next) => {
       path: 'bootcamp',
       select: 'name description',
     });
-  };
+  }
 
   const courses = await query;
 
@@ -25,5 +26,36 @@ export const getCourses = asyncHandler(async (req, res, next) => {
     success: true,
     count: courses.length,
     data: courses,
+  });
+});
+
+export const getCourse = asyncHandler(async function (req, res, next) {
+  const course = await Course.findById(req.params.id).populate({
+    path: 'bootcamp',
+    select: 'name description',
+  });
+
+  if (!course) {
+    return next(
+      new CustomErrorHandlerAPI(`No Course found with ID: ${req.params.id}`),
+    );
+  }
+
+  res.status(200).json({
+    success: true,
+    data: course,
+    count: course.length,
+  });
+});
+
+/**
+ * adds a course to the db
+ */
+export const addCourse = asyncHandler(async function (req, res, next) {
+  const course = await Course.create(req.body);
+
+  res.status(200).json({
+    success: true,
+    data: course,
   });
 });
