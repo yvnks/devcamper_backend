@@ -63,7 +63,7 @@ export const addCourse = asyncHandler(async function (req, res, next) {
   if (!bootcamp) {
     return next(
       new CustomErrorHandlerAPI(
-        `We tried to find a bootcamp with the ID: ${req.params.id}
+        `We tried to find a bootcamp with the ID: ${req.params.bootcampId}
          but an unforseen error occured. We are notifying our engineers.`,
         404,
       ),
@@ -77,4 +77,52 @@ export const addCourse = asyncHandler(async function (req, res, next) {
   });
 
   // GET api/v1/bootcamps/:bootcampId/courses
+});
+
+/**
+ * PATCH: api/v1/courses/:id
+ */
+export const updateCourse = asyncHandler(async function (req, res, next) {
+  const courseId = req.params.id;
+
+  let course = await Course.findById(courseId);
+
+  if (!course) {
+    return next(
+      new CustomErrorHandlerAPI(`Course with ID: ${courseId} not found`, 404),
+    );
+  }
+
+  course = await Course.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    data: course,
+  });
+
+  // GET api/v1/bootcamps/:bootcampId/courses
+});
+
+export const deleteCourse = asyncHandler(async function (req, res, next) {
+  const courseId = req.params.id;
+
+  let course = Course.findById(courseId);
+
+  if (!course) {
+    return next(
+      new CustomErrorHandlerAPI(
+        `No matching course found with the ID: ${courseId}`,
+        404,
+      ),
+    );
+  }
+  course = await Course.deleteOne();
+
+  res.status(200).json({
+    success: true,
+    data: {},
+  });
 });
