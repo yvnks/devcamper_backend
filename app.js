@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import bootcamp from './routes/bootcamp.route.js';
 import courses from './routes/courses.route.js';
 import auth from './routes/auth.routes.js';
+import admin from './routes/user.routes.js';
 import connectDB from './config/db.bootcamp.js';
 import customErrorHandler from './middleware/customErrorHandler.js';
 import fileUpload from 'express-fileupload';
@@ -20,7 +21,7 @@ app.use(express.json());
 app.use(express.static(path.join(import.meta.dirname, 'images')));
 app.set('query parser', 'extended');
 app.use(fileUpload());
-app.use(cookieParser())
+app.use(cookieParser());
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -29,6 +30,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/v1/bootcamps', bootcamp);
 app.use('/api/v1/courses', courses);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/users', admin);
 
 app.use(customErrorHandler);
 
