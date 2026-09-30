@@ -12,7 +12,7 @@ import { protect, authorize } from '../middleware/auth.middleware.js';
 
 const router = express.Router({ mergeParams: true });
 
-router
+router 
   .route('/')
   .get(
     advancedresults(Course, {

@@ -5,6 +5,7 @@ import bootcamp from './routes/bootcamp.route.js';
 import courses from './routes/courses.route.js';
 import auth from './routes/auth.routes.js';
 import admin from './routes/user.routes.js';
+import reviews from './routes/reviews.route.js';
 import connectDB from './config/db.bootcamp.js';
 import customErrorHandler from './middleware/customErrorHandler.js';
 import fileUpload from 'express-fileupload';
@@ -31,6 +32,7 @@ app.use('/api/v1/bootcamps', bootcamp);
 app.use('/api/v1/courses', courses);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/users', admin);
+app.use('/api/v1/reviews', reviews);
 
 app.use(customErrorHandler);
 

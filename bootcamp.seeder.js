@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 import fs from 'fs';
 import BootcampModel from './models/Bootcamp.model.js';
-import { configDotenv } from 'dotenv';
 import CourseModel from './models/courses.model.js';
 import User from './models/user.model.js';
+import ReviewModel from './models/reviews.models.js';
+import { configDotenv } from 'dotenv';
 
 configDotenv({ path: './config/config.env' });
 mongoose.connect(process.env.MONGODB_URI);
@@ -21,11 +22,16 @@ const users = JSON.parse(
   fs.readFileSync(`${import.meta.dirname}/_data/users.json`, 'utf-8'),
 );
 
+const reviews = JSON.parse(
+  fs.readFileSync(`${import.meta.dirname}/_data/reviews.json`, 'utf-8'),
+);
+
 const importData = async () => {
   try {
     await BootcampModel.create(bootcamps);
     await CourseModel.create(courses);
     await User.create(users);
+    await ReviewModel.create(reviews);
     console.log('data imported successfully');
     process.exit();
   } catch (error) {
@@ -38,6 +44,7 @@ const deleteData = async () => {
     await BootcampModel.deleteMany();
     await CourseModel.deleteMany();
     await User.deleteMany();
+    await ReviewModel.deleteMany();
     console.log('data destroyed');
     process.exit();
   } catch (error) {

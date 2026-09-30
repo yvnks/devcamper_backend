@@ -9,6 +9,7 @@ import {
   bootcampPhotoUpload,
 } from '../controllers/bootcamp.controller.js';
 import courses from './courses.route.js';
+import reviews from './reviews.route.js'
 import advancedresults from '../middleware/advanced-result.js';
 import Bootcamp from '../models/Bootcamp.model.js';
 import { protect, authorize } from '../middleware/auth.middleware.js';
@@ -17,6 +18,7 @@ const router = express.Router();
 
 // re-route into other resources;
 router.use('/:bootcampId/courses', courses);
+router.use('/:bootcampId/reviews', reviews);
 
 router.route('/radius/:zipcode/:distance').get(getBootcampInRadius);
 
