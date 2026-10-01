@@ -6,11 +6,10 @@ import sendEmail from '../utils/sendEmail.js';
 import crypto from 'crypto';
 
 export const register = asyncHandler(async (req, res, next) => {
-  const { firstName, lastName, email, password, role } = req.body;
+  const { name, email, password, role } = req.body;
 
   const user = await User.create({
-    firstName,
-    lastName,
+    name,
     email,
     password,
     role,
