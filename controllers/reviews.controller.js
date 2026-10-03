@@ -71,3 +71,70 @@ export const addReview = asyncHandler(async (req, res, next) => {
     data: review,
   });
 });
+
+/**
+ * @desc Update review
+ * @route POST /api/v1/reviews
+ * @access Private
+ */
+export const updateReview = asyncHandler(async (req, res, next) => {
+  let review = await Bootcamp.findById(req.params.id);
+
+  if (!review) {
+    return next(
+      new CustomErrorHandlerAPI(
+        `No review found with ID: ${req.params.id}`,
+        400,
+      ),
+    );
+  }
+
+  // Make sure review belongs to user or user is
+  if (review.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new CustomErrorHandlerAPI(
+        `You are not authorized to update review .`,
+        400,
+      ),
+    );
+  }
+
+  review = await Review.findByIdAndUpdate(req.params.id, req.body, {
+    returnDocument: 'after',
+    runValidators: true,
+  });
+  res.status(201).json({
+    success: true,
+    data: review,
+  });
+});
+
+export const deleteReview = asyncHandler(async (req, res, next) => {
+  const review = await Bootcamp.findById(req.params.id);
+
+  if (!review) {
+    return next(
+      new CustomErrorHandlerAPI(
+        `No review found with ID: ${req.params.id}`,
+        400,
+      ),
+    );
+  }
+
+  // Make sure review belongs to user or user is
+  if (review.user.toString() !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new CustomErrorHandlerAPI(
+        `You are not authorized to update review .`,
+        400,
+      ),
+    );
+  }
+
+  await review.deleteOne();
+
+  res.status(201).json({
+    success: true,
+    data: {},
+  });
+});
