@@ -11,8 +11,12 @@ export const protect = asyncHandler(async function (req, res, next) {
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
+    // Set token from bearer token in header.
     token = req.headers.authorization.split(' ')[1];
+  } /*else if (req.cookies.token) {
+    token = req.cookies.token;
   }
+  */
 
   // Check if token exists.
   if (!token) {
@@ -28,7 +32,10 @@ export const protect = asyncHandler(async function (req, res, next) {
   try {
     const decode = jwt.verify(token, process.env.JWT_SECRET_KEY);
     req.user = await User.findById(decode.id);
-    next();
+    
+    if(!req.user){
+      return next(new CustomErrorHandlerAPI(`You are not authorized to access this route.`, 401))
+    }
   } catch (error) {
     return next(
       new CustomErrorHandlerAPI(
@@ -37,7 +44,6 @@ export const protect = asyncHandler(async function (req, res, next) {
       ),
     );
   }
-  console.log(token);
 });
 
 export const authorize = function (...roles) {
